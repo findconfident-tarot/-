@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大眾占卜模板產生器｜塔羅</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&family=Ma+Shan+Zheng&display=swap');
+
+/*
+  清松手寫體字型請自行下載安裝：
+  https://github.com/max32002/swei-gothic
+  或搜尋「清松手寫體」下載 .ttf 後安裝到系統即可自動套用。
+*/
+@font-face {
+  font-family: 'JasonHandwriting1';
+  src: local('JasonHandwriting1');
+  font-display: swap;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #1a1025;
+  font-family: 'Noto Sans TC', sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  gap: 0;
+}
+
+/* ── 左側控制面板 ── */
+.panel {
+  width: 320px;
+  min-width: 320px;
+  background: #120d1e;
+  border-right: 1px solid rgba(180,140,220,0.2);
+  padding: 24px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.panel-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 17px;
+  color: #d4aeff;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid rgba(180,140,220,0.2);
+  padding-bottom: 12px;
+}
+
+.section-label {
+  font-size: 11px;
+  color: #9a7ec8;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.field-group { display: flex; flex-direction: column; gap: 7px; }
+
+label { font-size: 12px; color: #c4aee0; }
+
+input[type="text"], textarea {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(180,140,220,0.25);
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 13px;
+  padding: 9px 11px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+input[type="text"]:focus, textarea:focus {
+  border-color: rgba(180,140,220,0.6);
+}
+
+/* 圖片上傳 */
+.upload-row { display: flex; gap: 8px; }
+.upload-card { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.upload-card span { font-size: 12px; color: #a08ac8; }
+.upload-box {
+  width: 100%;
+  aspect-ratio: 2/3;
+  border: 1.5px dashed rgba(180,140,220,0.35);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+  transition: border-color 0.2s, background 0.2s;
+}
+.upload-box:hover {
+  border-color: rgba(180,140,220,0.7);
+  background: rgba(180,140,220,0.06);
+}
+.upload-box input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.upload-box .plus { font-size: 20px; color: rgba(180,140,220,0.5); line-height: 1; }
+.upload-box .hint { font-size: 9px; color: rgba(180,140,220,0.4); margin-top: 3px; }
+.upload-box img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* 色系選擇 */
+.color-row { display: flex; gap: 9px; flex-wrap: wrap; }
+.color-swatch {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.color-swatch:hover, .color-swatch.active {
+  border-color: #fff;
+  transform: scale(1.15);
+}
+
+/* 按鈕 */
+.btn-export {
+  background: linear-gradient(135deg, #9b6fd4, #c46fd4);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 13px;
+  cursor: pointer;
+  width: 100%;
+  letter-spacing: 0.06em;
+  transition: opacity 0.2s, transform 0.15s;
+  margin-top: auto;
+}
+.btn-export:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-export:active { transform: translateY(0); }
+
+.btn-clear {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(180,140,220,0.2);
+  border-radius: 8px;
+  color: #a08ac8;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 12px;
+  padding: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+.btn-clear:hover { background: rgba(180,140,220,0.1); }
+
+hr.divider {
+  border: none;
+  border-top: 1px solid rgba(180,140,220,0.12);
+}
+
+.note {
+  font-size: 10px;
+  color: #5a4a78;
+  text-align: center;
+}
+
+.font-status {
+  font-size: 10px;
+  color: #7a6898;
+  text-align: center;
+  padding: 2px 0;
+}
+
+/* ── 右側預覽 ── */
+.preview-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 28px 20px;
+  overflow: auto;
+  gap: 12px;
+}
+
+.preview-label {
+  font-size: 11px;
+  color: #7a6898;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Canvas 容器 540×675 (1080×1350 的一半) ── */
+#canvas-wrap {
+  position: relative;
+  width: 540px;
+  height: 675px;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+#bg-layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+#content-layer {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 24px 18px;
+}
+
+/* 背景色系 */
+.bg-purple  { background: linear-gradient(160deg,#c0a4d8 0%,#a89ac8 30%,#d4b8e8 60%,#e8c4f0 100%); }
+.bg-pink    { background: linear-gradient(160deg,#e8b4d0 0%,#d4a0c0 35%,#f0c8e0 70%,#e0b8d8 100%); }
+.bg-blue    { background: linear-gradient(160deg,#a0b8d8 0%,#8fa8cc 35%,#b8cce8 70%,#9ab0d4 100%); }
+.bg-sunset  { background: linear-gradient(160deg,#e8a88c 0%,#d4908c 35%,#e8b8a8 70%,#c898a8 100%); }
+.bg-forest  { background: linear-gradient(160deg,#8ca888 0%,#7a9878 35%,#9abca0 70%,#6e8c74 100%); }
+
+.cloud-deco {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  filter: blur(16px);
+  pointer-events: none;
+}
+
+/* 頂部塔羅圖示 */
+.tarot-icon-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.tarot-star-label {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.12em;
+}
+
+/* 主標題卡 */
+.title-card {
+  background: rgba(255,255,255,0.22);
+  border-radius: 14px;
+  padding: 14px 18px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.main-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  white-space: pre-wrap;
+}
+
+/* 卡牌區 */
+.cards-row {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+}
+.card-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+}
+.card-frame {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-frame img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.card-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.4;
+}
+.card-placeholder svg { width: 28px; height: 28px; }
+.card-placeholder span { font-size: 9px; color: #fff; }
+.card-letter {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+
+/* 底部 */
+.bottom-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  width: 100%;
+  flex-shrink: 0;
+}
+.badge-btn {
+  background: rgba(255,255,255,0.28);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  border-radius: 40px;
+  padding: 9px 36px;
+}
+.badge-text {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.1em;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.15);
+  white-space: nowrap;
+}
+
+/* 清松手寫體品牌名 */
+.brand-name {
+  font-family: 'JasonHandwriting1', cursive;
+  font-size: 22px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: 0.18em;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.25), 0 0 20px rgba(255,255,255,0.15);
+}
+
+.ig-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ig-handle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.06em;
+}
+</style>
+</head>
+<body>
+
+<!-- 左側控制面板 -->
+<div class="panel">
+  <div class="panel-title">🔮 大眾占卜模板產生器</div>
+
+  <div class="field-group">
+    <p class="section-label">主標題</p>
+    <textarea id="input-title" rows="2" oninput="updatePreview()">他心裡一直沒說出口
+的話是什麼</textarea>
+  </div>
+
+  <hr class="divider">
+
+  <div class="field-group">
+    <p class="section-label">底部標籤文字</p>
+    <input type="text" id="input-badge" value="大眾占卜" oninput="updatePreview()">
+  </div>
+
+  <hr class="divider">
+
+  <div class="field-group">
+    <p class="section-label">品牌名稱（清松手寫體）</p>
+    <input type="text" id="input-brand" value="自信塔羅" oninput="updatePreview()">
+  </div>
+
+  <div class="field-group">
+    <p class="section-label">IG 帳號</p>
+    <input type="text" id="input-ig" value="confident_tarot" oninput="updatePreview()">
+  </div>
+
+  <hr class="divider">
+
+  <div class="field-group">
+    <p class="section-label">卡牌圖片（建議 2:3 比例）</p>
+    <div class="upload-row">
+      <div class="upload-card">
+        <div class="upload-box" id="box-a" onclick="document.getElementById('file-a').click()">
+          <input type="file" id="file-a" accept="image/*" onchange="handleUpload('a',this)">
+          <div class="plus">＋</div><div class="hint">上傳</div>
+        </div>
+        <span>A</span>
+      </div>
+      <div class="upload-card">
+        <div class="upload-box" id="box-b" onclick="document.getElementById('file-b').click()">
+          <input type="file" id="file-b" accept="image/*" onchange="handleUpload('b',this)">
+          <div class="plus">＋</div><div class="hint">上傳</div>
+        </div>
+        <span>B</span>
+      </div>
+      <div class="upload-card">
+        <div class="upload-box" id="box-c" onclick="document.getElementById('file-c').click()">
+          <input type="file" id="file-c" accept="image/*" onchange="handleUpload('c',this)">
+          <div class="plus">＋</div><div class="hint">上傳</div>
+        </div>
+        <span>C</span>
+      </div>
+    </div>
+    <button class="btn-clear" onclick="clearImages()">🗑 清除所有圖片</button>
+  </div>
+
+  <hr class="divider">
+
+  <div class="field-group">
+    <p class="section-label">背景色系</p>
+    <div class="color-row">
+      <div class="color-swatch active" style="background:linear-gradient(135deg,#c0a4d8,#d4b8e8)" data-bg="bg-purple" onclick="setBg(this)"></div>
+      <div class="color-swatch" style="background:linear-gradient(135deg,#e8b4d0,#f0c8e0)" data-bg="bg-pink" onclick="setBg(this)"></div>
+      <div class="color-swatch" style="background:linear-gradient(135deg,#a0b8d8,#b8cce8)" data-bg="bg-blue" onclick="setBg(this)"></div>
+      <div class="color-swatch" style="background:linear-gradient(135deg,#e8a88c,#e8b8a8)" data-bg="bg-sunset" onclick="setBg(this)"></div>
+      <div class="color-swatch" style="background:linear-gradient(135deg,#8ca888,#9abca0)" data-bg="bg-forest" onclick="setBg(this)"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <button class="btn-export" onclick="exportImage()">⬇ 下載圖片 (1080 × 1350)</button>
+  <p class="note">匯出為高解析度 PNG，適合 Instagram</p>
+  <p class="font-status" id="font-status">⏳ 字體載入中...</p>
+</div>
+
+<!-- 右側預覽 -->
+<div class="preview-area">
+  <p class="preview-label">即時預覽（1:2 縮放）</p>
+
+  <div id="canvas-wrap">
+    <div id="bg-layer" class="bg-purple">
+      <div class="cloud-deco" style="width:180px;height:130px;top:-30px;left:-30px"></div>
+      <div class="cloud-deco" style="width:130px;height:100px;top:50px;right:-20px"></div>
+      <div class="cloud-deco" style="width:200px;height:140px;bottom:160px;left:30px"></div>
+      <div class="cloud-deco" style="width:100px;height:80px;bottom:80px;right:30px"></div>
+    </div>
+
+    <!-- 花朵 SVG 裝飾 -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.42" viewBox="0 0 540 675" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(420,10)" opacity="0.75">
+        <line x1="80" y1="0" x2="14" y2="110" stroke="rgba(160,120,180,0.6)" stroke-width="1.4"/>
+        <circle cx="78" cy="6" r="9" fill="rgba(240,200,220,0.75)"/>
+        <ellipse cx="78" cy="6" rx="4" ry="6.5" fill="rgba(255,220,235,0.85)" transform="rotate(-35,78,6)"/>
+        <ellipse cx="78" cy="6" rx="4" ry="6.5" fill="rgba(255,220,235,0.85)" transform="rotate(35,78,6)"/>
+        <circle cx="64" cy="28" r="6" fill="rgba(240,180,210,0.65)"/>
+        <circle cx="82" cy="38" r="7" fill="rgba(220,180,240,0.7)"/>
+        <ellipse cx="82" cy="38" rx="3.5" ry="6" fill="rgba(255,220,240,0.8)" transform="rotate(-25,82,38)"/>
+        <ellipse cx="82" cy="38" rx="3.5" ry="6" fill="rgba(255,220,240,0.8)" transform="rotate(25,82,38)"/>
+        <circle cx="48" cy="68" r="9" fill="rgba(240,200,225,0.7)"/>
+        <ellipse cx="48" cy="68" rx="4.5" ry="7" fill="rgba(255,215,235,0.8)" transform="rotate(-20,48,68)"/>
+        <ellipse cx="48" cy="68" rx="4.5" ry="7" fill="rgba(255,215,235,0.8)" transform="rotate(20,48,68)"/>
+        <circle cx="26" cy="98" r="6" fill="rgba(220,180,240,0.6)"/>
+      </g>
+      <g transform="translate(0,560)" opacity="0.55">
+        <line x1="0" y1="100" x2="62" y2="0" stroke="rgba(120,140,100,0.5)" stroke-width="1.4"/>
+        <ellipse cx="9" cy="82" rx="5" ry="13" fill="rgba(140,160,120,0.55)" transform="rotate(-22,9,82)"/>
+        <ellipse cx="26" cy="56" rx="5" ry="13" fill="rgba(140,160,120,0.5)" transform="rotate(-12,26,56)"/>
+        <ellipse cx="44" cy="28" rx="4" ry="11" fill="rgba(140,160,120,0.45)" transform="rotate(4,44,28)"/>
+      </g>
+    </svg>
+
+    <div id="content-layer">
+      <!-- 頂部塔羅圖示 -->
+      <div class="tarot-icon-wrap">
+        <svg width="56" height="70" viewBox="0 0 56 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="52" height="66" rx="7" fill="rgba(255,255,255,0.22)" stroke="rgba(255,255,255,0.7)" stroke-width="1.6"/>
+          <polygon points="28,9 30.2,15.8 37.2,15.8 31.6,19.8 33.8,26.6 28,22.6 22.2,26.6 24.4,19.8 18.8,15.8 25.8,15.8" fill="rgba(255,230,120,0.92)"/>
+          <ellipse cx="28" cy="40" rx="10" ry="7" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="1.3"/>
+          <circle cx="28" cy="40" r="4" fill="rgba(255,255,255,0.55)"/>
+          <circle cx="28" cy="40" r="1.8" fill="rgba(200,155,240,0.95)"/>
+          <path d="M11 54 Q21 49 28 54 Q35 59 45 54" stroke="rgba(255,255,255,0.6)" stroke-width="1.3" fill="none"/>
+          <path d="M11 61 Q21 56 28 61 Q35 66 45 61" stroke="rgba(255,255,255,0.35)" stroke-width="1.1" fill="none"/>
+        </svg>
+        <span class="tarot-star-label" id="preview-badge-top">✦ 大眾占卜 ✦</span>
+      </div>
+
+      <!-- 主標題 -->
+      <div class="title-card">
+        <div class="main-title" id="preview-title">他心裡一直沒說出口
+的話是什麼</div>
+      </div>
+
+      <!-- 三張卡牌 -->
+      <div class="cards-row">
+        <div class="card-slot">
+          <div class="card-frame" id="card-a">
+            <div class="card-placeholder">
+              <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="2" width="24" height="28" rx="3" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><path d="M10 20 Q16 10 22 20" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/><circle cx="16" cy="12" r="3" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/></svg>
+              <span>牌面圖</span>
+            </div>
+          </div>
+          <span class="card-letter">A</span>
+        </div>
+        <div class="card-slot">
+          <div class="card-frame" id="card-b">
+            <div class="card-placeholder">
+              <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="2" width="24" height="28" rx="3" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><path d="M10 20 Q16 10 22 20" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/><circle cx="16" cy="12" r="3" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/></svg>
+              <span>牌面圖</span>
+            </div>
+          </div>
+          <span class="card-letter">B</span>
+        </div>
+        <div class="card-slot">
+          <div class="card-frame" id="card-c">
+            <div class="card-placeholder">
+              <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="2" width="24" height="28" rx="3" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><path d="M10 20 Q16 10 22 20" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/><circle cx="16" cy="12" r="3" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/></svg>
+              <span>牌面圖</span>
+            </div>
+          </div>
+          <span class="card-letter">C</span>
+        </div>
+      </div>
+
+      <!-- 底部品牌 -->
+      <div class="bottom-section">
+        <div class="badge-btn">
+          <span class="badge-text" id="preview-badge">大眾占卜</span>
+        </div>
+        <span class="brand-name" id="preview-brand">自信塔羅</span>
+        <div class="ig-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="rgba(255,255,255,0.75)" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.5" stroke="rgba(255,255,255,0.75)" stroke-width="1.6"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="rgba(255,255,255,0.75)"/>
+          </svg>
+          <span class="ig-handle" id="preview-ig">confident_tarot</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="note" style="color:#5a4a88;margin-top:4px">⬆ 預覽畫面，實際輸出 1080 × 1350 px</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  function updatePreview() {
+    document.getElementById('preview-title').textContent = document.getElementById('input-title').value;
+    const badge = document.getElementById('input-badge').value;
+    document.getElementById('preview-badge').textContent = badge;
+    document.getElementById('preview-badge-top').textContent = '✦ ' + badge + ' ✦';
+    document.getElementById('preview-brand').textContent = document.getElementById('input-brand').value;
+    document.getElementById('preview-ig').textContent = document.getElementById('input-ig').value;
+  }
+
+  function handleUpload(slot, input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const box = document.getElementById('box-' + slot);
+      let img = box.querySelector('img');
+      if (!img) { img = document.createElement('img'); box.appendChild(img); }
+      img.src = e.target.result;
+      box.querySelector('.plus').style.display = 'none';
+      box.querySelector('.hint').style.display = 'none';
+
+      const card = document.getElementById('card-' + slot);
+      card.querySelector('.card-placeholder').style.display = 'none';
+      let ci = card.querySelector('img');
+      if (!ci) { ci = document.createElement('img'); card.appendChild(ci); }
+      ci.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearImages() {
+    ['a','b','c'].forEach(s => {
+      const box = document.getElementById('box-' + s);
+      const bi = box.querySelector('img'); if (bi) bi.remove();
+      box.querySelector('.plus').style.display = '';
+      box.querySelector('.hint').style.display = '';
+      const card = document.getElementById('card-' + s);
+      const ci = card.querySelector('img'); if (ci) ci.remove();
+      card.querySelector('.card-placeholder').style.display = 'flex';
+      document.getElementById('file-' + s).value = '';
+    });
+  }
+
+  function setBg(el) {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+    const bgLayer = document.getElementById('bg-layer');
+    ['bg-purple','bg-pink','bg-blue','bg-sunset','bg-forest'].forEach(c => bgLayer.classList.remove(c));
+    bgLayer.classList.add(el.dataset.bg);
+  }
+
+  // 字體載入偵測
+  document.fonts.ready.then(() => {
+    const families = [...document.fonts].map(f => f.family);
+    const hasHandwriting = families.some(f =>
+      f.includes('JasonHandwriting') || f.includes('Jason')
+    );
+    const status = document.getElementById('font-status');
+    if (hasHandwriting) {
+      status.textContent = '✓ 清松手寫體已載入';
+      status.style.color = '#7ec89a';
+    } else {
+      status.textContent = '※ 請安裝清松手寫體以獲得最佳效果';
+      status.style.color = '#c8a07e';
+    }
+  });
+
+  async function exportImage() {
+    const btn = document.querySelector('.btn-export');
+    btn.textContent = '⏳ 產生中...';
+    btn.disabled = true;
+    await document.fonts.ready;
+    const wrap = document.getElementById('canvas-wrap');
+    try {
+      const canvas = await html2canvas(wrap, {
+        scale: 2,
+        width: 540,
+        height: 675,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        logging: false
+      });
+      const link = document.createElement('a');
+      link.download = 'tarot_' + Date.now() + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch(e) {
+      alert('匯出失敗，請確認圖片已正確上傳。');
+      console.error(e);
+    }
+    btn.textContent = '⬇ 下載圖片 (1080 × 1350)';
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>
