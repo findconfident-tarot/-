@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自信塔羅預約</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F0E8;
+  --teal: #2F4F4A;
+  --teal-light: #3d6b63;
+  --gold: #C9A96E;
+  --gold-light: #E8D5AA;
+  --gold-pale: #f7f0e0;
+  --text-dark: #1e3530;
+  --text-mid: #4a5e5a;
+  --text-light: #8a9e9a;
+  --border: rgba(201,169,110,0.3);
+  --border-strong: rgba(201,169,110,0.6);
+  --shadow: 0 4px 24px rgba(47,79,74,0.10);
+  --shadow-hover: 0 8px 32px rgba(47,79,74,0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #e8e2d6;
+  min-height: 100vh;
+  font-family: 'Noto Serif TC', serif;
+  color: var(--text-dark);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#app {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background texture */
+#app::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 420px;
+  height: 100%;
+  background-image: 
+    radial-gradient(ellipse at 20% 20%, rgba(201,169,110,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(47,79,74,0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page { position: relative; z-index: 1; }
+
+/* ── HEADER ── */
+.header {
+  background: var(--teal);
+  padding: 28px 24px 22px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 120%, rgba(201,169,110,0.15) 0%, transparent 70%);
+}
+.header-ornament {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+.header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+  line-height: 1.2;
+}
+.header-subtitle {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: rgba(232,213,170,0.6);
+  margin-top: 6px;
+}
+.header-divider {
+  margin: 14px auto 0;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ── PROGRESS BAR ── */
+.progress {
+  background: var(--teal);
+  padding: 0 24px 20px;
+  position: relative;
+  z-index: 1;
+}
+.progress-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+.progress-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(201,169,110,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  color: rgba(232,213,170,0.4);
+  background: transparent;
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+.progress-dot.active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,169,110,0.1);
+  box-shadow: 0 0 12px rgba(201,169,110,0.3);
+}
+.progress-dot.done {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--teal);
+}
+.progress-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(232,213,170,0.4);
+  transition: color 0.4s;
+  white-space: nowrap;
+}
+.progress-label.active { color: var(--gold-light); }
+.progress-label.done { color: var(--gold); }
+.progress-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(201,169,110,0.2);
+  margin: 0 4px;
+  margin-bottom: 20px;
+  position: relative;
+  max-width: 50px;
+}
+.progress-line-fill {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), rgba(201,169,110,0.4));
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+/* ── CONTENT ── */
+.content {
+  padding: 24px 18px 40px;
+}
+
+/* ── SECTION TITLE ── */
+.section-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.section-title-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  opacity: 0.7;
+}
+.section-title-zh {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--teal);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+.section-divider {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 10px auto 0;
+}
+
+/* ── SERVICE CARDS ── */
+.service-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  margin-bottom: 14px;
+  overflow: hidden;
+  transition: all 0.35s ease;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.service-card:hover { box-shadow: var(--shadow-hover); }
+.service-card.selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), var(--shadow-hover);
+}
+
+.service-card-header {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.service-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.service-card-info { flex: 1; }
+.service-card-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--teal);
+  letter-spacing: 0.03em;
+}
+.service-card-desc {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 3px;
+  letter-spacing: 0.02em;
+}
+.service-card-arrow {
+  font-size: 11px;
+  color: var(--gold);
+  transition: transform 0.3s;
+}
+.service-card.open .service-card-arrow { transform: rotate(180deg); }
+
+.service-card-body {
+  display: none;
+  border-top: 1px solid var(--border);
+  padding: 14px 14px 16px;
+  background: var(--gold-pale);
+  animation: slideDown 0.3s ease;
+}
+.service-card.open .service-card-body { display: block; }
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── PLAN CARDS ── */
+.plan-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  padding: 14px 14px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+.plan-card:last-child { margin-bottom: 0; }
+.plan-card:hover { border-color: var(--gold-light); }
+.plan-card.selected {
+  border-color: var(--gold);
+  background: rgba(201,169,110,0.06);
+}
+.plan-card.selected::before {
+  content: '✓';
+  position: absolute;
+  top: 10px; right: 12px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: white;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plan-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding-right: 26px;
+}
+.plan-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--teal);
+  line-height: 1.4;
+}
+.plan-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.plan-price span {
+  font-size: 12px;
+  font-family: 'Noto Serif TC', serif;
+}
+.plan-badge {
+  display: inline-block;
+  background: var(--teal);
+  color: var(--gold-light);
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+.plan-includes {
+  font-size: 11px;
+  color: var(--text-mid);
+  margin-top: 8px;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+.plan-includes li { list-style: none; padding-left: 14px; position: relative; }
+.plan-includes li::before { content: '✦'; position: absolute; left: 0; color: var(--gold); font-size: 8px; top: 2px; }
+.plan-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.plan-tag {
+  font-size: 10px;
+  color: var(--teal);
+  background: rgba(47,79,74,0.07);
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+}
+
+/* ── STEP GUIDE ── */
+.step-guide {
+  background: rgba(47,79,74,0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 14px;
+}
+.step-guide-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.step-guide-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+.step-guide-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--gold-light);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* ── NEXT BUTTON ── */
+.btn-primary {
+  width: 100%;
+  background: var(--teal);
+  color: var(--gold-light);
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(201,169,110,0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-primary:hover:not(:disabled)::before { opacity: 1; }
+.btn-primary:hover:not(:disabled) {
+  background: var(--teal-light);
+  box-shadow: 0 4px 16px rgba(47,79,74,0.3);
+  transform: translateY(-1px);
+}
+.btn-primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.btn-secondary {
+  background: transparent;
+  border: 1.5px solid var(--border-strong);
+  color: var(--teal);
+  border-radius: 10px;
+  padding: 12px;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  margin-top: 10px;
+}
+.btn-secondary:hover { background: var(--gold-pale); }
+
+/* ── FORMS ── */
+.form-section {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 16px 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.form-section-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-section-title::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+.form-optional {
+  font-size: 10px;
+  color: var(--text-light);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+.field {
+  margin-bottom: 14px;
+}
+.field:last-child { margin-bottom: 0; }
+.field label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-mid);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.field label .req {
+  color: var(--gold);
+  margin-left: 2px;
+}
+.field input, .field textarea, .field select {
+  width: 100%;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 13px;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.25s;
+  resize: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  border-color: var(--gold);
+  background: white;
+}
+.field textarea { line-height: 1.6; }
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ── PREVIEW ── */
+.preview-box {
+  background: var(--teal);
+  border-radius: 12px;
+  padding: 16px 16px 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.preview-title {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.preview-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,169,110,0.3);
+}
+.preview-content {
+  font-size: 11.5px;
+  color: rgba(232,213,170,0.85);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: monospace;
+}
+
+/* ── COMPLETE PAGE ── */
+.complete-page {
+  padding: 32px 18px 48px;
+  text-align: center;
+}
+.complete-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px;
+  background: radial-gradient(circle, rgba(201,169,110,0.1) 0%, transparent 70%);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0.3); }
+  50% { box-shadow: 0 0 0 10px rgba(201,169,110,0); }
+}
+.complete-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--teal);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.complete-subtitle {
+  font-size: 12px;
+  color: var(--text-light);
+  letter-spacing: 0.05em;
+  margin-bottom: 28px;
+}
+
+.info-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 18px;
+  margin-bottom: 14px;
+  text-align: left;
+  box-shadow: var(--shadow);
+}
+.info-card-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(201,169,110,0.12);
+  font-size: 12px;
+}
+.info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.info-row-label { color: var(--text-light); }
+.info-row-value { color: var(--text-dark); font-weight: 500; }
+.info-row-value.gold { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 18px; }
+
+.message-preview {
+  background: var(--teal);
+  border-radius: 12px;
+  padding: 16px 16px 18px;
+  margin-bottom: 14px;
+  text-align: left;
+}
+.message-preview-title {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.message-preview-content {
+  font-size: 11.5px;
+  color: rgba(232,213,170,0.85);
+  line-height: 1.9;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: monospace;
+}
+
+.btn-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #00B900;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 10px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(0,185,0,0.2);
+}
+.btn-line:hover { background: #00a000; transform: translateY(-1px); }
+
+.btn-copy {
+  width: 100%;
+  background: var(--gold);
+  color: var(--teal);
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 14px;
+  font-weight: 500;
+}
+.btn-copy:hover { background: #b8954f; transform: translateY(-1px); }
+
+.copy-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: var(--teal);
+  color: var(--gold-light);
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--gold);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 999;
+  white-space: nowrap;
+}
+.copy-toast.show { opacity: 1; }
+
+/* ── STEP INDICATOR CHIP ── */
+.step-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(47,79,74,0.07);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 10px;
+  color: var(--teal);
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.step-chip-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* ── PAGE TRANSITIONS ── */
+.page-enter {
+  animation: pageIn 0.4s ease forwards;
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── NOTICE ── */
+.notice {
+  background: rgba(201,169,110,0.08);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+}
+.notice strong {
+  color: var(--teal);
+  font-weight: 500;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 10px;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+/* ── CANDLE SERVICE BODY ── */
+.candle-desc {
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.8;
+  background: rgba(47,79,74,0.04);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
+/* Responsive tweak */
+@media (max-width: 420px) {
+  #app { max-width: 100%; }
+  #app::before { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-ornament">✦ ZIXIN TAROT ✦</div>
+    <div class="header-title">自信塔羅預約</div>
+    <div class="header-subtitle">線上占卜預約系統</div>
+    <div class="header-divider"></div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress">
+    <div class="progress-track">
+      <div class="progress-step">
+        <div class="progress-dot active" id="dot-1">1</div>
+        <div class="progress-label active" id="lbl-1">選服務</div>
+      </div>
+      <div class="progress-line"><div class="progress-line-fill" id="line-1"></div></div>
+      <div class="progress-step">
+        <div class="progress-dot" id="dot-2">2</div>
+        <div class="progress-label" id="lbl-2">填資料</div>
+      </div>
+      <div class="progress-line"><div class="progress-line-fill" id="line-2"></div></div>
+      <div class="progress-step">
+        <div class="progress-dot" id="dot-3">✦</div>
+        <div class="progress-label" id="lbl-3">完成</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div id="step1" class="page page-enter">
+    <div class="content">
+      <div class="section-title">
+        <div class="section-title-en">CHOOSE YOUR SERVICE</div>
+        <div class="section-title-zh">選擇服務項目</div>
+        <div class="section-divider"></div>
+      </div>
+
+      <!-- Service 1 -->
+      <div class="service-card" id="svc-tarot" onclick="toggleService('tarot')">
+        <div class="service-card-header">
+          <div class="service-card-icon">🔮</div>
+          <div class="service-card-info">
+            <div class="service-card-name">個人文字占卜</div>
+            <div class="service-card-desc">離線文字服務・無需同時在線</div>
+          </div>
+          <div class="service-card-arrow" id="arrow-tarot">▼</div>
+        </div>
+        <div class="service-card-body" id="body-tarot" onclick="e=>e.stopPropagation()">
+          <!-- Plan A -->
+          <div class="plan-card" id="plan-tarot-a" onclick="selectPlan('tarot','a',event)">
+            <div class="plan-top">
+              <div>
+                <div class="plan-name">單題指引占卜</div>
+                <div class="plan-badge">抽 3 張牌</div>
+              </div>
+              <div class="plan-price"><span>$</span>222</div>
+            </div>
+            <ul class="plan-includes">
+              <li>問題解析</li>
+              <li>目前狀態解讀</li>
+              <li>行動建議指引</li>
+            </ul>
+          </div>
+          <!-- Plan B -->
+          <div class="plan-card" id="plan-tarot-b" onclick="selectPlan('tarot','b',event)">
+            <div class="plan-top">
+              <div>
+                <div class="plan-name">深度套組占卜</div>
+                <div class="plan-badge">抽 6 張牌</div>
+              </div>
+              <div class="plan-price"><span>$</span>888</div>
+            </div>
+            <ul class="plan-includes">
+              <li>多面向深度分析</li>
+              <li>未來方向建議</li>
+              <li>生命靈數解析</li>
+              <li>附贈個人專屬魔法能量蠟燭</li>
+            </ul>
+          </div>
+          <!-- Guide -->
+          <div id="tarot-guide" style="display:none">
+            <div class="step-guide">
+              <div class="step-guide-title">✦ 選牌步驟說明</div>
+              <div class="step-guide-item">
+                <div class="step-guide-num">1</div>
+                <div>靜心冥想約 1 分鐘，將心中的問題凝聚在心</div>
+              </div>
+              <div class="step-guide-item">
+                <div class="step-guide-num">2</div>
+                <div>在下方填寫您的基本資料與詳細問題</div>
+              </div>
+              <div class="step-guide-item">
+                <div class="step-guide-num">3</div>
+                <div>送出後我將親自為您抽牌解讀，並以文字回覆</div>
+              </div>
+              <div class="step-guide-item">
+                <div class="step-guide-num">4</div>
+                <div>完成匯款後，通常於 1–3 個工作日內完成</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="service-card" id="svc-candle" onclick="toggleService('candle')">
+        <div class="service-card-header">
+          <div class="service-card-icon">🕯️</div>
+          <div class="service-card-info">
+            <div class="service-card-name">個人專屬魔法蠟燭</div>
+            <div class="service-card-desc">為自己設定新目標・提升能量狀態</div>
+          </div>
+          <div class="service-card-arrow" id="arrow-candle">▼</div>
+        </div>
+        <div class="service-card-body" id="body-candle" onclick="e=>e.stopPropagation()">
+          <div class="candle-desc">適合想為自己設定新目標、提升能量狀態的人</div>
+          <!-- Plan A -->
+          <div class="plan-card" id="plan-candle-a" onclick="selectPlan('candle','a',event)">
+            <div class="plan-top">
+              <div>
+                <div class="plan-name">輕度陪伴魔法蠟燭</div>
+                <div class="plan-badge">小顆魔法蠟燭</div>
+              </div>
+              <div class="plan-price"><span>$</span>333</div>
+            </div>
+            <div class="plan-tags">
+              <span class="plan-tag">✦ 自信提升</span>
+              <span class="plan-tag">✦ 個人成長</span>
+              <span class="plan-tag">✦ 穩定情緒</span>
+              <span class="plan-tag">✦ 行動力提升</span>
+              <span class="plan-tag">✦ 人際關係</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:8px;line-height:1.6;">
+              當你已經知道自己想前往哪裡，只需要一點陪伴與提醒
+            </div>
+          </div>
+          <!-- Plan B -->
+          <div class="plan-card" id="plan-candle-b" onclick="selectPlan('candle','b',event)">
+            <div class="plan-top">
+              <div>
+                <div class="plan-name">深度專屬魔法蠟燭</div>
+                <div class="plan-badge">中顆魔法蠟燭</div>
+              </div>
+              <div class="plan-price"><span>$</span>555</div>
+            </div>
+            <div class="plan-tags">
+              <span class="plan-tag">✦ 感情課題</span>
+              <span class="plan-tag">✦ 工作方向</span>
+              <span class="plan-tag">✦ 關係改善</span>
+              <span class="plan-tag">✦ 財富規劃</span>
+              <span class="plan-tag">✦ 人生選擇期</span>
+            </div>
+            <ul class="plan-includes" style="margin-top:8px;">
+              <li>包含一次個人指引占卜</li>
+            </ul>
+            <div style="font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.6;">
+              當你還在迷惘與整理階段，透過占卜與蠟燭，一起看見更清晰的方向
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btn-next1" disabled onclick="goToStep2()">
+        ✦ 繼續填寫資料
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2A - 占卜表單 -->
+  <div id="step2a" class="page" style="display:none">
+    <div class="content">
+      <div class="step-chip"><span class="step-chip-dot"></span>個人精準占卜資料表</div>
+
+      <div class="section-title">
+        <div class="section-title-en">YOUR INFORMATION</div>
+        <div class="section-title-zh">填寫占卜資料</div>
+        <div class="section-divider"></div>
+      </div>
+
+      <!-- 基本資料 -->
+      <div class="form-section">
+        <div class="form-section-title">基本資料 <span style="color:var(--gold);font-size:10px;margin-left:4px;">必填</span></div>
+        <div class="field">
+          <label>姓名 / 綽號 <span class="req">*</span></label>
+          <input type="text" id="f-name" placeholder="您希望如何稱呼您" oninput="updatePreview2a()">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>性別 <span class="req">*</span></label>
+            <select id="f-gender" onchange="updatePreview2a()">
+              <option value="">請選擇</option>
+              <option>女性</option>
+              <option>男性</option>
+              <option>非二元</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>星座 <span class="req">*</span></label>
+            <select id="f-sign" onchange="updatePreview2a()">
+              <option value="">請選擇</option>
+              <option>牡羊座</option><option>金牛座</option><option>雙子座</option>
+              <option>巨蟹座</option><option>獅子座</option><option>處女座</option>
+              <option>天秤座</option><option>天蠍座</option><option>射手座</option>
+              <option>魔羯座</option><option>水瓶座</option><option>雙魚座</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>事情經過 <span class="req">*</span></label>
+          <textarea id="f-bg" rows="4" placeholder="請描述目前遇到的狀況、事件背景..." oninput="updatePreview2a()"></textarea>
+        </div>
+        <div class="field">
+          <label>想問的方向 <span class="req">*</span></label>
+          <textarea id="f-question" rows="3" placeholder="例如：這段關係接下來的發展？現在的工作是否該離職？" oninput="updatePreview2a()"></textarea>
+        </div>
+      </div>
+
+      <!-- 感情補充 -->
+      <div class="form-section">
+        <div class="form-section-title">感情補充 <span class="form-optional">選填</span></div>
+        <div class="field">
+          <label>對象資料（姓名/綽號/星座）</label>
+          <input type="text" id="f-partner" placeholder="例如：小明 / 天蠍座" oninput="updatePreview2a()">
+        </div>
+        <div class="field">
+          <label>目前感情狀態</label>
+          <select id="f-rel-status" onchange="updatePreview2a()">
+            <option value="">請選擇（選填）</option>
+            <option>單身，對某人有好感</option>
+            <option>曖昧中</option>
+            <option>交往中</option>
+            <option>分手 / 復合考慮</option>
+            <option>已婚</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 工作補充 -->
+      <div class="form-section">
+        <div class="form-section-title">工作補充 <span class="form-optional">選填</span></div>
+        <div class="field-row">
+          <div class="field">
+            <label>職業 / 產業</label>
+            <input type="text" id="f-job" placeholder="例如：行銷、護理" oninput="updatePreview2a()">
+          </div>
+          <div class="field">
+            <label>年資</label>
+            <input type="text" id="f-seniority" placeholder="例如：2 年" oninput="updatePreview2a()">
+          </div>
+        </div>
+      </div>
+
+      <!-- 即時預覽 -->
+      <div class="preview-box">
+        <div class="preview-title">✦ LINE 訊息預覽</div>
+        <div class="preview-content" id="preview2a">請填寫上方資料，預覽將自動生成...</div>
+      </div>
+
+      <button class="btn-primary" id="btn-submit2a" disabled onclick="goToComplete()">
+        ✦ 確認送出預約
+      </button>
+      <button class="btn-secondary" onclick="backToStep1()">← 返回選擇服務</button>
+    </div>
+  </div>
+
+  <!-- STEP 2B - 蠟燭表單 -->
+  <div id="step2b" class="page" style="display:none">
+    <div class="content">
+      <div class="step-chip"><span class="step-chip-dot"></span>專屬魔法蠟燭資料表</div>
+
+      <div class="section-title">
+        <div class="section-title-en">YOUR INTENTIONS</div>
+        <div class="section-title-zh">填寫能量設定資料</div>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="notice">
+        <strong>適合對象：</strong>已經知道自己想努力的方向，只需要一點陪伴與提醒的人。<br>
+        ✦ 自信提升 ✦ 個人成長 ✦ 穩定情緒 ✦ 行動力提升 ✦ 人際關係
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">基本資料 <span style="color:var(--gold);font-size:10px;margin-left:4px;">必填</span></div>
+        <div class="field">
+          <label>姓名 / 綽號 <span class="req">*</span></label>
+          <input type="text" id="c-name" placeholder="您希望如何稱呼您" oninput="updatePreview2b()">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">目前狀況 <span style="color:var(--gold);font-size:10px;margin-left:4px;">必填</span></div>
+        <div class="field">
+          <label>目前遇到的問題 <span class="req">*</span></label>
+          <textarea id="c-situation" rows="4" placeholder="請描述目前遇到的狀況或困擾..." oninput="updatePreview2b()"></textarea>
+        </div>
+        <div class="field">
+          <label>希望達成的目標 <span class="req">*</span></label>
+          <textarea id="c-goal" rows="3" placeholder="請描述你想看見的結果..." oninput="updatePreview2b()"></textarea>
+        </div>
+      </div>
+
+      <!-- 555限定 -->
+      <div class="form-section" id="c-question-section" style="display:none">
+        <div class="form-section-title">想詢問的問題 <span class="form-optional">$555 限定</span></div>
+        <div class="field">
+          <textarea id="c-question" rows="3" placeholder="例如：這段關係接下來的發展？是否適合轉換工作？我目前最需要調整的是什麼？" oninput="updatePreview2b()"></textarea>
+        </div>
+      </div>
+
+      <!-- 即時預覽 -->
+      <div class="preview-box">
+        <div class="preview-title">✦ LINE 訊息預覽</div>
+        <div class="preview-content" id="preview2b">請填寫上方資料，預覽將自動生成...</div>
+      </div>
+
+      <button class="btn-primary" id="btn-submit2b" disabled onclick="goToComplete()">
+        ✦ 確認送出預約
+      </button>
+      <button class="btn-secondary" onclick="backToStep1()">← 返回選擇服務</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 - 完成 -->
+  <div id="step3" class="page" style="display:none">
+    <div class="complete-page">
+      <div class="complete-icon">✦</div>
+      <div class="complete-title">預約已送出</div>
+      <div class="complete-subtitle">感謝您的信任，我將盡快與您聯繫</div>
+
+      <div class="info-card">
+        <div class="info-card-title">💳 匯款資訊</div>
+        <div class="info-row">
+          <span class="info-row-label">銀行</span>
+          <span class="info-row-value">郵局（700）</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-label">帳號</span>
+          <span class="info-row-value" id="complete-account">00715030560511</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-label">金額</span>
+          <span class="info-row-value gold" id="complete-amount">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-label">方案</span>
+          <span class="info-row-value" id="complete-plan">—</span>
+        </div>
+      </div>
+
+      <div class="notice" style="text-align:left;">
+        <strong>注意事項：</strong><br>
+        ・ 請於 24 小時內完成匯款<br>
+        ・ 匯款後請傳送最後 5 碼末五碼至 LINE<br>
+        ・ 收到確認後將開始為您服務
+      </div>
+
+      <div class="message-preview">
+        <div class="message-preview-title">✦ 您的完整訊息</div>
+        <div class="message-preview-content" id="complete-msg">—</div>
+      </div>
+
+      <button class="btn-copy" onclick="copyMessage()">📋 一鍵複製訊息</button>
+
+      <a href="https://lin.ee/dDmH13O" target="_blank" class="btn-line">
+        <svg width="22" height="22" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="white"/><path d="M20 8C13.4 8 8 12.8 8 18.8c0 5.2 4.6 9.6 10.8 10.5.4.1 1 .3 1.2.7.2.4.1.9.1 1.3l-.2 1.3c-.1.4-.4 1.5 1.3.8s9.2-5.4 12.6-9.3C35.8 21.7 32 13.5 20 8z" fill="#00B900"/></svg>
+        加入 LINE 並傳送訊息
+      </a>
+
+      <button class="btn-secondary" style="margin-top:14px;" onclick="resetAll()">← 重新預約</button>
+    </div>
+  </div>
+
+  <div class="footer">✦ 自信塔羅 ✦ 每一次占卜都是與自己的對話</div>
+</div>
+
+<div class="copy-toast" id="toast">✓ 訊息已複製至剪貼簿</div>
+
+<script>
+// State
+let state = {
+  service: null,    // 'tarot' | 'candle'
+  plan: null,       // 'a' | 'b'
+  planName: '',
+  planPrice: 0,
+  step: 1
+};
+
+const LINE_URL = 'https://lin.ee/dDmH13O';
+
+function scrollTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.querySelector('#app').scrollTop = 0;
+}
+
+function toggleService(svc) {
+  const body = document.getElementById('body-' + svc);
+  const card = document.getElementById('svc-' + svc);
+  const isOpen = card.classList.contains('open');
+
+  // Close all
+  ['tarot','candle'].forEach(s => {
+    document.getElementById('svc-' + s).classList.remove('open');
+    document.getElementById('svc-' + s).classList.remove('selected');
+  });
+
+  if (!isOpen) {
+    card.classList.add('open');
+    card.classList.add('selected');
+    // Reset plan if switching service
+    if (state.service !== svc) {
+      state.service = svc;
+      state.plan = null;
+      state.planName = '';
+      state.planPrice = 0;
+      clearPlanSelections();
+      updateBtn1();
+    }
+  } else {
+    state.service = null;
+    state.plan = null;
+    updateBtn1();
+  }
+}
+
+function clearPlanSelections() {
+  ['tarot-a','tarot-b','candle-a','candle-b'].forEach(id => {
+    const el = document.getElementById('plan-' + id);
+    if (el) el.classList.remove('selected');
+  });
+}
+
+function selectPlan(svc, plan, event) {
+  if (event) event.stopPropagation();
+
+  // Make sure service card is open & selected
+  if (state.service !== svc) {
+    toggleService(svc);
+  }
+
+  state.service = svc;
+  state.plan = plan;
+
+  clearPlanSelections();
+  document.getElementById('plan-' + svc + '-' + plan).classList.add('selected');
+
+  // Set plan details
+  const plans = {
+    'tarot-a': { name: '單題指引占卜（抽3張牌）', price: 222 },
+    'tarot-b': { name: '深度套組占卜（抽6張牌）', price: 888 },
+    'candle-a': { name: '輕度陪伴魔法蠟燭（小顆）', price: 333 },
+    'candle-b': { name: '深度專屬魔法蠟燭（中顆）', price: 555 }
+  };
+  const key = svc + '-' + plan;
+  state.planName = plans[key].name;
+  state.planPrice = plans[key].price;
+
+  // Show tarot guide
+  if (svc === 'tarot') {
+    document.getElementById('tarot-guide').style.display = 'block';
+  }
+
+  updateBtn1();
+}
+
+function updateBtn1() {
+  document.getElementById('btn-next1').disabled = !(state.service && state.plan);
+}
+
+function goToStep2() {
+  // Update progress
+  setProgress(2);
+
+  document.getElementById('step1').style.display = 'none';
+
+  if (state.service === 'tarot') {
+    const el = document.getElementById('step2a');
+    el.style.display = 'block';
+    el.classList.add('page-enter');
+    updatePreview2a();
+  } else {
+    const el = document.getElementById('step2b');
+    el.style.display = 'block';
+    el.classList.add('page-enter');
+    // Show 555 question section
+    document.getElementById('c-question-section').style.display = state.plan === 'b' ? 'block' : 'none';
+    updatePreview2b();
+  }
+  scrollTop();
+}
+
+function backToStep1() {
+  setProgress(1);
+  document.getElementById('step2a').style.display = 'none';
+  document.getElementById('step2b').style.display = 'none';
+  const el = document.getElementById('step1');
+  el.style.display = 'block';
+  el.classList.add('page-enter');
+  scrollTop();
+}
+
+function setProgress(step) {
+  state.step = step;
+  const dots = [null, 'dot-1','dot-2','dot-3'];
+  const lbls = [null, 'lbl-1','lbl-2','lbl-3'];
+  const lines = [null, 'line-1','line-2'];
+
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById(dots[i]);
+    const lbl = document.getElementById(lbls[i]);
+    dot.classList.remove('active','done');
+    lbl.classList.remove('active','done');
+    if (i < step) {
+      dot.classList.add('done');
+      lbl.classList.add('done');
+    } else if (i === step) {
+      dot.classList.add('active');
+      lbl.classList.add('active');
+    }
+  }
+
+  for (let i = 1; i <= 2; i++) {
+    document.getElementById(lines[i]).style.width = i < step ? '100%' : '0%';
+  }
+}
+
+// ─── PREVIEW 2A ───
+function updatePreview2a() {
+  const name = v('f-name');
+  const gender = v('f-gender');
+  const sign = v('f-sign');
+  const bg = v('f-bg');
+  const question = v('f-question');
+  const partner = v('f-partner');
+  const relStatus = v('f-rel-status');
+  const job = v('f-job');
+  const seniority = v('f-seniority');
+
+  let lines = [];
+  lines.push('✦ 自信塔羅預約 ✦');
+  lines.push(`方案：${state.planName}`);
+  lines.push(`費用：$${state.planPrice}`);
+  lines.push('');
+  lines.push('【基本資料】');
+  if (name) lines.push(`姓名／綽號：${name}`);
+  if (gender) lines.push(`性別：${gender}`);
+  if (sign) lines.push(`星座：${sign}`);
+  lines.push('');
+  if (bg) { lines.push('【事情經過】'); lines.push(bg); lines.push(''); }
+  if (question) { lines.push('【想問方向】'); lines.push(question); }
+
+  if (partner || relStatus) {
+    lines.push('');
+    lines.push('【感情補充】');
+    if (partner) lines.push(`對象：${partner}`);
+    if (relStatus) lines.push(`感情狀態：${relStatus}`);
+  }
+  if (job || seniority) {
+    lines.push('');
+    lines.push('【工作補充】');
+    if (job) lines.push(`職業：${job}`);
+    if (seniority) lines.push(`年資：${seniority}`);
+  }
+
+  const preview = lines.join('\n');
+  document.getElementById('preview2a').textContent = preview;
+
+  // Enable button
+  const ready = name && gender && sign && bg.trim() && question.trim();
+  document.getElementById('btn-submit2a').disabled = !ready;
+}
+
+// ─── PREVIEW 2B ───
+function updatePreview2b() {
+  const name = v('c-name');
+  const situation = v('c-situation');
+  const goal = v('c-goal');
+  const question = state.plan === 'b' ? v('c-question') : '';
+
+  let lines = [];
+  lines.push('✦ 自信塔羅預約 ✦');
+  lines.push(`方案：${state.planName}`);
+  lines.push(`費用：$${state.planPrice}`);
+  lines.push('');
+  if (name) lines.push(`姓名／綽號：${name}`);
+  lines.push('');
+  if (situation) { lines.push('【目前遇到的問題】'); lines.push(situation); lines.push(''); }
+  if (goal) { lines.push('【希望達成的目標】'); lines.push(goal); }
+  if (question) { lines.push(''); lines.push('【想詢問的問題】'); lines.push(question); }
+
+  const preview = lines.join('\n');
+  document.getElementById('preview2b').textContent = preview;
+
+  const ready = name && situation.trim() && goal.trim();
+  document.getElementById('btn-submit2b').disabled = !ready;
+}
+
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+// ─── COMPLETE ───
+function goToComplete() {
+  // Build message
+  let msg = '';
+  if (state.service === 'tarot') {
+    msg = document.getElementById('preview2a').textContent;
+  } else {
+    msg = document.getElementById('preview2b').textContent;
+  }
+
+  document.getElementById('complete-amount').textContent = `$${state.planPrice}`;
+  document.getElementById('complete-plan').textContent = state.planName;
+  document.getElementById('complete-msg').textContent = msg;
+
+  setProgress(3);
+
+  if (state.service === 'tarot') {
+    document.getElementById('step2a').style.display = 'none';
+  } else {
+    document.getElementById('step2b').style.display = 'none';
+  }
+
+  const el = document.getElementById('step3');
+  el.style.display = 'block';
+  el.classList.add('page-enter');
+  scrollTop();
+}
+
+function copyMessage() {
+  const msg = document.getElementById('complete-msg').textContent;
+  navigator.clipboard.writeText(msg).then(() => {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  });
+}
+
+function resetAll() {
+  state = { service: null, plan: null, planName: '', planPrice: 0, step: 1 };
+  setProgress(1);
+
+  // Reset forms
+  ['f-name','f-gender','f-sign','f-bg','f-question','f-partner','f-rel-status','f-job','f-seniority',
+   'c-name','c-situation','c-goal','c-question'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // Reset cards
+  ['tarot','candle'].forEach(s => {
+    document.getElementById('svc-' + s).classList.remove('open','selected');
+  });
+  clearPlanSelections();
+  document.getElementById('tarot-guide').style.display = 'none';
+
+  document.getElementById('step3').style.display = 'none';
+  document.getElementById('step2a').style.display = 'none';
+  document.getElementById('step2b').style.display = 'none';
+  const el = document.getElementById('step1');
+  el.style.display = 'block';
+  el.classList.add('page-enter');
+
+  updateBtn1();
+  scrollTop();
+}
+</script>
+</body>
+</html>
