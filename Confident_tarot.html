@@ -25,14 +25,15 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  background: #e8e2d6;
+}
+
 body {
   background: #e8e2d6;
   min-height: 100vh;
   font-family: 'Noto Serif TC', serif;
   color: var(--text-dark);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   margin: 0;
   padding: 0;
 }
@@ -44,16 +45,15 @@ body {
   background: var(--cream);
   position: relative;
   overflow-x: hidden;
-  overflow-y: visible;
+  margin: 0 auto;
+  box-shadow: 0 0 40px rgba(0,0,0,0.1);
 }
 
 /* Background texture */
 #app::before {
   content: '';
-  position: fixed;
-  top: 0; left: 50%; transform: translateX(-50%);
-  width: min(420px, 100vw);
-  height: 100%;
+  position: absolute;
+  inset: 0;
   background-image: none;
   pointer-events: none;
   z-index: 0;
@@ -707,7 +707,7 @@ body {
   position: fixed;
   bottom: 30px;
   left: 50%;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%);
   background: var(--teal);
   color: var(--gold-light);
   padding: 10px 22px;
@@ -718,8 +718,9 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s;
-  z-index: 999;
+  z-index: 9999;
   white-space: nowrap;
+  max-width: 90vw;
 }
 .copy-toast.show { opacity: 1; }
 
@@ -892,16 +893,14 @@ body {
 
 /* Responsive tweak */
 @media (max-width: 420px) {
-  #app { max-width: 100vw; }
-  #app::before { width: 100vw; }
+  #app { box-shadow: none; }
 }
 
 /* ── ANIMATED PARTICLE BACKGROUND ── */
 #particles-canvas {
-  position: fixed;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: min(420px, 100vw);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 0;
@@ -1881,9 +1880,8 @@ function resetAll() {
 
   function resize() {
     const app = document.getElementById('app');
-    canvas.width = Math.min(app.offsetWidth, window.innerWidth);
-    canvas.height = window.innerHeight;
-    // Reset particle x positions within new bounds
+    canvas.width = app.offsetWidth;
+    canvas.height = app.scrollHeight || window.innerHeight;
     particles.forEach(p => {
       if (p.x > canvas.width) p.x = Math.random() * canvas.width;
     });
