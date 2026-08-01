@@ -234,7 +234,9 @@
     display:flex;align-items:center;justify-content:center;font-size:24px;
     background:linear-gradient(160deg,var(--gold-soft),var(--gold));
     box-shadow:0 6px 14px -6px rgba(227,183,104,0.6);
+    overflow:hidden;
   }
+  .product-icon img{width:100%;height:100%;object-fit:cover;display:block;}
   .product-info .p-name{font-size:14px;font-weight:600;color:var(--plum-deep);margin-bottom:3px;}
   .product-info .p-desc{font-size:12px;color:var(--ink);opacity:0.75;line-height:1.5;}
 
@@ -393,21 +395,14 @@
     <div class="modal-overlay" id="modalOverlay">
       <div class="answer-panel" id="answerPanel">
       <button class="modal-close" id="modalClose" aria-label="關閉">✕</button>
-      <div class="answer-badge">你選的是 <span id="answer-letter">A</span></div>
+      <div class="answer-badge">抽到<span id="answer-letter">A</span>的你</div>
       <div class="answer-heading" id="answer-heading">牌義標題</div>
       <div class="answer-text" id="answer-text">解答內容</div>
 
-      <div class="divider"><span id="txt-divider">建議使用</span></div>
+      <div class="divider"><span id="txt-divider">自信推薦搭配使用</span></div>
       <div class="products">
         <div class="product-card">
-          <div class="product-icon">🌸</div>
-          <div class="product-info">
-            <div class="p-name" id="p1-name">招桃花魔法噴霧</div>
-            <div class="p-desc" id="p1-desc">睡前輕噴於枕邊與空間，柔化磁場、召喚曖昧好運。</div>
-          </div>
-        </div>
-        <div class="product-card">
-          <div class="product-icon">🕯️</div>
+          <div class="product-icon"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCACgAKADASIAAhEBAxEB/8QAHQAAAgIDAQEBAAAAAAAAAAAAAAcFBgMECAIJAf/EAEIQAAEDAwIEBAIHBgQEBwAAAAECAwQABREGIQcSMUETIlFhcYEIFDJCkaGxFSNSYnLBFqLR8DNTgpIkNEOywtLh/8QAGgEAAgMBAQAAAAAAAAAAAAAAAAQBAgMFBv/EAC8RAAEEAAQDBwMFAQAAAAAAAAEAAgMRBBIhMRNBUQVhcYGxwdEiMpEUUoKh8CP/2gAMAwEAAhEDEQA/AOy6KKKEIrxIeZjsrfkOoaaQOZa1qCUpHqSelad+u8GyWt243B3w2W+wGVLUeiUjuonYCuY+KXEHUGq567fbEqDaT5GWzzIa9z2Wv+Y7Dt6lTEYrhkRsGZ55e56D/BMwYfiAveaaOfsOp/xTW1xxt03YeZqAPr7w6LKuRv5bFSvkAPelBf8A6Q2rZbi02xpEdB6BpgD81cxqG0to1mXdXGb6HkSVI8VC3l5Q+n7xSruRncHcVdU6OtzExqM2w3gg526YHWlS17xmlkPgNB8/2tuMxhqJg8Tqfj+kvJHG/iU2orEuXj0OP9K37N9JzWFueSLrHRKbB3DjIz+IwatV10xb0NKUtDaQB1NKnVkOwqluw4ziH5KQD4bQyd+m/SrfpoxqHOH8j8qBi3ndoP8AEfC6X4Z/SA0fq5SIsp0W2YdsLVlGfj1Hz296b7a0OISttSVoUMpUk5BHqK+Yl2sd1hyRIjw3I6kqBSoLwpPvtT9+jfxruFnns6Y1U+p6G4eVl5XVJ9v9O/xqePJh9ZDmZ15jx6jvFUp4Mc+kYyu6cj4dD3c12BRXllxt5pDrS0rbWkKSpJyCD0Neq6QN6hIEUiiiihCKKKKEIooooQiiiihCKKKr/ES5O2rR1wlR1cshTYZZPcLcUEJPyKs/KqSSCNhe7YC1eNhkeGDc6JO8WdRTNT6hRarWsqaS4pmKEnY42W9890g/wgn71S2mNGwrLbPDS2lbxH7xwjcmtThlaWlvSb0tHl5vq8XP3UI2z+VWK66ltMR9+EqSgPMpSVgnABUcAEnbJ9PhXNg/5R8WT7nan2HkNE3iXZ5OHH9rdB7nzOqUPF90R0txWw4EoeS8VJyPDKeige3p6b1BXy/8z9uZj3xAZfIcDqneVaQvKUjA6JQT8+vpTL13plM6xSpU9CHnHEcy2ycpSkbhP/7ST4i2CVb78xEWyy2wpvxW3W0q8FS1b8uQNiPTON6RIcZw93f+Fqwt4eUKRvilW/SzMFsTb+81kPSA4r6uytR3HN3xnpv8qVzylonKdQvmWp0qSvp5SMFB/AfMVeLDanTBnuuXOWhbLiX2G23VqQEghLmRgjGVbjr1PSom/aadYuMqZDQmTbGkBbymySlrJABA69x07fCto8Q0vOo6KkkZDVL25udIaQq5oCo62v3chxwFXLk4OBnPxONhVZ1FbRHlFTCiFJwtKk9vQip/S16XZrVMTPZccK22i2UjycqiQN+x23qRvCI90s7c+Oz4aXE55c55T0IpqN5JLTyWBFAOC6P+i1rJzUuhUwpjnNLg+RXrjv8Anv8AOm/XJf0QZi4etZ8LJDbqU7e5BH6gV1pV+znUx0X7DXloR+Aa8lpjhbmyfuF+ex/sWiiiiugkkUUZHrRQhFFFFCEUUUUIRVD43uKb0tDAOy7i0D8krI/MCr5VM40Q3JPD6c+0grcgqbmAAfdbWCv/ACc1KdoML8LI0b0fRNYF4ZiY3Hax6qr6f/8ACWC2W9rCVLbSM+hO5NaV40jaY8t+MhFvnF5fjOJfAKgtP3skk59KzW9bciJbpKTlnkwCOgrJOftkGWLpK8FsIQouvK7JAOB+NJyyCRwI20pQGuYS07hLBzX86DdJlhk22Mi2RhytraUpS04V9/PbG/arAWo9+0rHmyorTiygqCSMgK3wd6W7Wg2tU8RX51gkS0wT4jzkl9taF8xWQpIBG4JAIB7b1uxr1L0ZfU2XUDraV4JbWycIfR7pJ8qvbp6Gspc7SHhtjb/dVqzK4Ft0VrtyJunmpLkUFMY58dJASAe4x77bD2rxoOI9qTTU61ynmoyL8y8jnbHIpDiVlTavbzIKSO/NUnrMtagVaIMWHKjKnLU+sEbhLQzg4ODuR3rFoq1y9O3BcWWpDQQ+tqK8lQI2w4nI6jBJwT16VjMzYdCtGuKwStKWGHpiVp+Ep56ctkPIeeIJfwMgp7bZ6D171XbFFmtaceRLjOMI8QqaCxg4IBO3xzVmstitw1i4iTKlxWnpDjqGCoqZb8pX+7OThJJI7enaveqGohQQlxwkKySo7Y701C95svWMmUDK1bn0bWFsakuVzAPIwWt/gST+VdcKUEpKlEADck9q5n4YKt+m9PSmZ7zUZ9+OuTJU4rAZSRzbnthIT+NZdRaj1VxauK7XaC/a9LtkIXzApXI93B3J6hv7KdufJ8oOypOJxJBs46eWnst+0mcJscZ3A9dfdMDW/HHSdhdVDtfi36aDyhMU/uuYdR4m/Mf6Ar5UvrhxX4tXhZVZrFDtbB+yXG8qx7leSf8AtFXLSfDiy2NjLbAW/jC3XPM4rHqT29ht7VZP2fCisFa0tobSnKydsY710y9crUpFTr7xvdUXV6gUg5zytuco/wAqAKwjjBxi07g3FuJcWkdQtCSSPwSfzpwaimW22tnxW+Y4JCU4yoD0z3pKa41hEvS5MSyQm3kssqW6Xlcik4IGSnsnfqayOJYDlvVaNhcRdaJjaO+ktZ35LUDWNnk2SS4kKDgSeRQV0PKrfB9QVU8rJd7Ze7e3PtM5iZFc+y40rI+B9D7HeuOBaIerdMQm32nEuQkLYSiRjmKUqIPxGcEeyqiNO3TWHCm8C4WSS89C5h40RaipKkdwB3Ht19CK0jlzDVQ5paV3XRVR4V6+s/EDTbd1tjgS6ABIYJyppX9x1wf71bq2UDVFeJDTb7DjDyEuNuJKVpUMhQIwQa90UISR02BpHVMrQt3J+r58a1POdHWCfKM/xJ+yfcA/eqzXyMhuOTHS22e6uXcCl19NtNxtsDS2qICloTDlux3VJ7eIkFP/ALDUJwv42265xGbbqRXhv4CUvdeb/X9fjXAlAwzjE/7OR6XyPd0PLZdfhuxLRMz7+Y61zHf1C/HNUQFXWRbxJl26+2+Spxlh9WBNSk+VSD97mH3Ovpmsuu7HpJhf+KxHakTLu0l1Dkp79yhRSOgPf29u1WrWehtJ6/tZAcaWvGWpEdQ8Ro+o7j4GlvpXh5rexavbg3diDqWzHIbnSXil6Kk9SEnOT64zn1FTHhgxtwnQ+fn5rF81mniiPJTGnYmob7DYXbUCy2xpJbKlJHjqV3KUkYSk7EE7kEfConUGjLetieuS7P8AHZuBjfWHX1ZUgJTgqUdiMqO/amfoDTz1gsSUXR9uRcFlRfdbzykc6ilIH8KQQBtUdrK4xZri7ctzypCSoJBKiM7pGOmQMfOiUcOIlxoqkdySANFpdyOGtvgPxLpFus5D0chaFIe8qvUH1B6YrFKkx4bbt7u6kGDHz4TZGPrLg7f0juflW/q3VduitltxSVBsYTGaX2HZah0HsN/euf8AidrOZfZgipd8hIQlCBhKR2AHYUjLiXY08DD7Hd3d3fK6kGDGFHHxG42Hz8Jo8No144matccU64mI69zKI6YSQSo+vLkYH8RT6V1vp6x2+xW1mFFZS2htHKAO3z7+570ufow6YYsWhG5i2wHXQG0nHZPU/wDcVH8KsWsdQTLRc234iA+zgGUwVbhPTnT6Ed/X5V3442YaJsbRoFwZZXYmUyO3KmH75BeiiUxIBb8RSMqBThSTggg79RVLumuXogUxIiN+KD5FAktqQRuT6YORjvtVb13qiNIcYTHD3KghQPKFDGQTkE9Ogz2qvtagiz2FtLDcecvKG0FRw3kZCVEbE9d6o5466qzYzV0t7izqW1XP9lgBIlKUUtuI87bZJwd/ukjoe1Km3Wq6W7VEV4sR3nllyO5klQQHPLyqKTvgYJz6d8VZJWlpsee3LjJ8TxHQ8SU8yOYd8evvVls9qet9nauzzWJKXVAeJg84JB29h6H2qpjJ3V2uDRQW/oDQvLJExxfMlT5/eNjlWOU5xnsnm7d/kKs+s9LMSYiwGkjO+wrUscFEyTNbuSvGQ2luctLLpSELJB5eX3Kc9dqutqlpvmmo08+EVuJPOEZwlQJBG++RUxloKpJa500terjwq4is3SIpX7NkOhuYznCVAnGfn+uDXbNrmxrlbo8+G4HY8htLjax3SRkVyfxhsCH4z2UDzJI6U0/oj6ievHDg22W4VyLY74Rydwk5/wDklR+dOxutYbFOaiiitFKqXF/RzGu+Hl1025ypdkNc0ZxX/pvJ8yFfiMH2Jr5wT2Ztlukm13NhcaTFdU082sYLa0nBB+dfUG7XGJbIhky3OVOeVKQMqWrslI7k1zfxFY03ftfO3+FpWFPvyUJaWpwlUdop6Kd7LdxgYA2AHxpLFRhxBG6ewk2QEO2SS4fQ+JUtpMmwMyxFHR+Srw2QPZSsbfCmbB1FfbYgNai4g2GK6OrbEhx9Q/StfVlrub8RcvUdzfktpGzCCW2UD0ShPX55qEt2moTqChKWo0pB5jHLYBKSMj/faubNhcMwguFE9LHonGYyaQU3UDrR9VY52rLbLT4aeI8HmP8Az47oT+SqhrjZ9VXSItdnvFtvjOMlq2ykhR/6Dgn860tVaetNtjB2W6lkHoCN/YYqqSLA5HSmfbXlIz5kONKKT+IqJOyMO/U3fiT62rR9qTsGm3hXpSputrlNgyXbfKjvxH2zhbLzZQtPxB3qJ0RpK/akMzUEaE4q02godmylAhtOVpSEA91EqG3Ybmmg3reHcFsWPiXZWdSWxCgGpC8plMY/hcThWPVOdxXU0iPpPUv0fLza9CxYceGq1OmLGioASFpTzpGOueZIznfPWncHho4RlCWxeKfKLUPOmOWnhDZXojrrZQ34qg11OVH0+P5Uuv8AHcq9LuB5kofeZQwQd0ubkEdCAe/5UxNGrTqjgxbnY2HClpbWCNgckj8lJpaNw7nZLo/b1xY4jdlPNnG/YYGDvVMfI5moS2CDXaELbDkeVaHIC2lsvuM+CVqQAvG3MApPXofXpml59bl2SRIccanKYBLHKFbo3HIvBG5A5u/fttVmu9wairW0u5NthB50oDJ8qx0wok9D0rBpKQu/6jajXSBJVb3UqQZBRyJQrGcggY3ONjVYM0zRm/KfkjYGlw0TL4JwUans7MuS48XYyDzeIAE5O2SB3x+tXPVFltjkQMvFR8Ip8jJ8ycnAOPT/AEqjaHdetRnsRphatcaQpZfQ1kqV/wAvA+0B1P4etRmrdaToqnnmmQ+24k860IKSogEDoSem+emK1MmQZaXOy53WFZpulnBMfl2N1UQPAeKG0k+KPVW+9W/TEaNFj/VEMqbccA5iVfbUE4yR2OB+VLXR+vW4yZMG4yCZLLnh8y8lSwQFZwOn2sY7Yq56b1dYJalKVPablpHlS5hPlzvvnc0RtbdhQ/NVFQ/E+MhUB447HFRn0OuZrUGpWATyElWO2eZH/wBjWfiPd4/7MXzy2HF8pyUqAB+Waz/Q4gqU3frxjyPu4SfUFRx+SB+NORbpc8l0RWvcpke3wXpspfIyynmUf7D1J6AVsVQeJF1cVMRb4w51RygpR2ckuZDST7JAKz8q1e7KLV2NzGlV9Ry7tqi8riNLXHIGH1oP/lWz0aQf+YobqV26elSMXTkK0QUtMMoQlCdgBW/phFthxVRI0xmS+wopkqCwpXindXN6Ek5rNfHwmI4sq7Usfp33V3Gz3JEcXLvIiXWCIjSnQw+HnG0kDKUgk9fTY1Wblrhq9FlqzQREkymilM19WFcoIJSB6HGM5yO1Z72mdfl3yXzoDTDqxlxQCSjOEJz6kgkjrsKoEGF9VYbddUlbZcSjlKCsoOxKVDGD12Pw9q5MrTM/NXgupBljbRWHVt2ly2W7dMWEy47qnG+dzmS4gA5GTvkE7Edc1buFkpd30a62+lKpDEosgHAOTgDPf/ftVS4jxISXrbMZc8WRgtK82ctnPLkdiOmD1zvWvZrzdNIw5U2IyiSh19hxKc+UL5SPzG3zrptZlaAEOaZYbpWrWmkIyIrrbbaQr7ZUnY5/i/GtPgRxHm6A1almTIC7et4NzWQrITvgOY7e/tRcb2dRQ0zI7vhyAghxteUlpQPRXrg5pcaviuQbs3cW4i22nUecZySe4z94ehrGOZr35Nktwi1t2uuuEc+Hp7iFqDh284UW6a8J1mVzEBbSxzoSk+nKSn4t4701rpZILwWtUdtRUeZWRnJ9f0rjudfJE/gxY9ZxX1C56TuCYD76FeYxXjlpWf5VgY/qNdJcF+KFs4gWVpl99tq9tI/es5A8bHVaB+qe3UbU1WYapF4yO02UBrNmNBuxEiCPq6sALLQWkH1x7V+xIsyS39ViT4qipPKjwWEpwO529BTLvNnTOWw6XnWw0vmKUBJDgxjlVkHb4YNRdvYjWy7rd8BGSnlB5e3esSS0q12FUDZH4toWxAlKCceUAc6Rtv33JO+/rVCEC7xHQZyPAbKypT6G+dJABPLyZyCrbrsMHFP8qhhzCIqnkKG6EDG3b4VXtVWiDIiOJlI+qtOoKAlLx5ye3Tr8Kq8EC2lWa4bFI2DcbNcrzAk25l9qT47ji1OAAhI6cyTtt67VeJr1sdcWuVBYLKGkqAUkZ3zzEn8Kg4Olrdb7xISpUlgSFBCGEJUsrSD2IGEc222e3Wt/WJgaYtHitFcpwYDaJDxJJJ2A6lR9OpqkYL9QrvIboVTuJsW2L8KLbo6EyZSg20MnbPU+wA3PwrqHgZplGl+HcCIEFDj6Q+sEbgEAJB9+UAn3JpD8FdHTdWawau17R4jKVFa0keVDYOfDT8TgKP8A0+uOsQMDFdGMUErubQaSl1elTJqru0ogBEiaP6nF+G3+DaMfOnJcFFECQtPVLSiPwNIXWGrrPo7R7L1xf5HJEGMllAGVLPJ0HzJJJqJDqFvE0kEDdJNhrU7Wp511sN4X9bdWpbqmH+R5O+eVxCvtfGrlZ9f3+ZBcsmoWnHisFCZSVALxjcLwBv6EVXbHZH3pJuCVqdU6oOZc8riMjm2X0OOnar9HsbM20omxeV+VGUUrSfLzdihQ6hX++9IsxsbxRNr0UjY3sAkHyofTVkul4Eq2XJyEIscJLTYCVLAOcOKT3OM7q61HyIlwZu7tljsSnbXHc5HgWftbJIXkYyke3Q59KtWirdIaku3GHGR9UksEKfWrDoWFH93y+g7k9xWV6JdkXRb8fzoWAHG1KwlQH6VA01XGeMri1JnXtvaiXS1vXGHKbguspQHXRnxFbnm5kdjzZGe2M1E3SHarhCciQ5SIzjzyENrU6SkqSeYfAn+1O7XWn0S9JCzRpEWSI+HGmCf3sVQPNypP3kdcJVuB0JFKK8psD8yQ5IZbSUNDx0utlJznGwOCCCQcipMwA3T0ElsyFaJ07Nt3iMIchl5aluqeUzzBSFAKSEqVnBB5gcGq5fHEKjtxJiXW2vE5OdzbH8wxt1ph6NdhyQ7bI03mfU2kxmpIAcbVnzBSTuQdtxtjfFVTjTZn3pzclMxuK40C2WEkeCe+U753x3pdssb3AO0PVWe0kkhbvBuMm68NuKemm/Og2P620ntztK5wR800tOH18mQ5LbsSU5HkNKCkLQogpPbpT0+iJbEvP60ceKHGzahFcV91RXnPyxSCXZ5No1JLtEttyBdIbym1supIJAOxweoIwQfQg10ojoVycQNQureH/wBISRGZahazhKkAAJE1kgKP9Q2Cv8p+NNy0630NqBKXIt8glSujby/CWPkrH5ZriK3zUKYLUvDDoGN/sq+B/saxJdUlZLKigZ+6cD8qktB3S+U8l9BmptvQwPAkRij1Q6kj8jVf1BqawQCHZtzt7IRnHO8nOPbfNcUNSZXhn96rCRv0/wBK37bOiBYMpK3NxkeIUj/LijIFSynzqvijb3XTEsEZc6QvyoVyKSk/AY5lfIfOq7FtEqZK/berZagUjKGOYBQH8IA2bHwJUe5FU2FrCNbm0R7fBbade8raGG8rcV2G25zTp4R6BuWqbhFu+oW1ptzBDjraj5XnOzSfVI+8rudhUhvRQTab3CayJtmnG5rjaW35qELDaU4Sy0B5GwPYHPxNXKgAAAAYAorYCgrry4kLbUhQyFDB+dct8ZLOi4aVt8aTDS+WW1R1ZB8q2VlBG2/T9a6mpXazs7Sb/Ltz6B4FwJmxSeniYCXkD3+yv5msZ221bwPLTouerRepVmb+pBlM+3tpyUqIC2ARugq6EbHerTE1IXJkS5twFxGpTJjS0BYVzLT0Jx2I2B67Cs2qeH8qGiYtp1fhPowWenMe247e3rVBu4mQYSW4jK2G46SkKUvO/MCTnH2RuD7En2rzr4nQu+oLtRyMlaS1M9q8L0toZcxmP9cT463g2V4CGyrBwe+ACfeqrrPijKYmqtMSxKhuLTkPSHh9k9FJA/v+lZbtquNcdIJ5ltszClTfhIKTvj7QHcY3pbW2w3zUl+LsZkCUWfCKiBkgAZKQSOuOuwpl8uUANOlJZkbXEueOatuhr5P/AGtanbylUSOXW3nwAUtuN4PIsbbjIwrfHU59bdqnTNhvVwdefkGGppZWC0n/AIiCNvj32z1pbXaNdtMuIM6O84lLCmM5CgFHOQOXy7ggb46bGs0276qFsQj9+sKZSEoUxyKSegHKCcjpuKrGWtYQNirzfU4EbrWvel3bTeE3W1TwtLZQliagYwV5xlJ9kkEdOnY0vtXypcmc6p5xhYA5/EIUCR0xjfbamzGlXf8AwWwzelpEaSOWKRs9HSU82cHIIynIHb3BxUDp/RK9V6rYtLABZUQZKgnytIH2lfPt8faowxzv15IfJkbl5pqfRU027ZuEU+6ykjx7w4t9O2P3SRhHy2z86veuuDel+MWgLXLuaDbb8zGCYl1jJAdQE7BKx99G3Q7jsRU6wIUCwG3Q0JQw20mMwhIxtjH6VetIxVQtOQoquraMfLJIrtwLmTm1wPrbgZxn0k6tk2H/ABPBRnw5lsHiLKf5kbLHzB+NLuW3fbY6W7npy7wXBsUvQXEH80ivqjX4QCMHce9bFoKX1Xy3gr1FclGPabLd5a3BgpZgrWT7bA0xNC8BeL2qnUF6zrsEMkc0i6K8IgezYys/gPjX0EAAGBt8K/akNAUEWkvwp+jto/Rq259yefv935fM/JHK2n1CEDoPiTTmabQ02lttCUISAEpSMAAdgK9UVKAKRRRRQpRUPq+yJvlq8BDoYlsrD0R/GfCdHQ+4O4I7gmpiioIsUVINGwk3fLhKfgrjyYhZmRFhubH6qa9FfzNnqFDqPnVDdRGSzJSpltYVuFYxgjqfh+Oaf2tNMt3tgSojgh3eOgiLKA+fIsfeQT1B6dRg0ktL6302xf5Nuv8AamrTfYzykSGnRslwbEpPQA7HbbpSE0Jzb6J6GVuU0NVA6z4dwUNtXFhlTIBS6ppOwGcEjHY1406zLs8hxuM4pUFzGUSkpCkqI7OJH6/lTYuT9tu8Uhp1KkKHY5B+YqJNot7cVSXHS5sByk5GB02pKfDF7gW1SvFPlBDwlRqx6VNW468zHEdgpAeabSVA5GBzdjnv1qt6ruzVglKeeZakI51gJSSMLUk8pSdsDPbpTL1Larg9aZNos9pLiH184cxyJSffOO9VxPDNNwjIa1ZeG22QoFUWGQtxQH3Ss7D3O59xV24aICiFq2YucCdlWLIxdtaaatMG1pc8QIBaTthjBI5lKx0Hv2px6Rslu0TYf2dDcD8xwAzZeMFxWOg9EjoB6V5tgtljtbdqsUJuBDbTyhKN1KHurqa24EVyY8FOfYG+D+prQtY020UqAFx0U7pRl+43BnxAeXnylP8Av2/Wm8hISgJHQDFUnhxCLxcuYTiInLcYkf8AEP3l/DsPnV3roQNIbZ5pKdwLqHJFFFFbLBFFFFCEUUUUIRRRRQhFFFFCEUouP3B6NryOLzZy3E1FHRhKyeVMpI6IWeyh2V8jt0btFQ5ocKKlri02FwQ29q7StzcttwalsSGDhbThLbif7Ee/Q+tWi265uakhLsueg/zEn8xXWmrNJ6f1TFEe921mVyjDbmOVxv8ApWNxSqv3Axxlwu6dubLrfZienCh8HEDf5ppV8Lhtqm2TMO+iXDOo3ZOOeRIc/qKjUlDfkSMBtpQHqRip5jhnrOMvAscJ3H3kT04/MA1YLTw81i4QHjZ7ajuStTyx8AAB+dY8OQ8ltniG5UBAgpbb+sS3EoQncqUcAVcNJ2CRqEJcU27FsvVThBS5L9k9wj379vWrDp/hzaoLrcq7SHr1KRukyAA0g+qWxt+OauoAAwBgCtYsNRt6xlxNjKxeI7LUdhDDDaW2m0hKEJGAkDoBXuiinEmiiiihCKKKKEIooooQiiiihC//2Q==" alt="蠟燭"></div>
           <div class="product-info">
             <div class="p-name" id="p2-name">心想事成許願蠟燭</div>
             <div class="p-desc" id="p2-desc">點燃寫下心願，讓意念隨著燭光被宇宙聽見。</div>
@@ -458,31 +453,34 @@ const CONFIG = {
 
 const DEFAULT_DATA = {
   eyebrow: "大眾占卜",
-  title: "他對我也有一點心動嗎",
+  title: "我們還有復合的機會嗎",
   subtitle: "有對應到的話 ✨ 最底下有專屬你的訊息 👇",
   instruction: "靜下心來，選一張你直覺感應的牌",
 
-  card_a_text: "他其實是對於你有一點心動的，只是目前因為在現實層面、物質財務上，有因此感到一絲的退卻，並且其實他也還沒有準備好，還在思考這段關係要怎麼開始，也因為目前沒有什麼其他的想法，所以在選擇等待、觀望的態度，你就是為什麼你總感覺對方好像沒有動靜",
+  card_a_heading: "高塔逆位",
+  card_a_text: "這段關係比較偏向不太可能會復合了喔，能感覺到你們分開之後，其實是令你非常措手不及，完全不知道竟然會發生這樣的事，讓你感到非常的沮喪與難過，而現在你們目前彼此的生活重心也都已經不在對方的身上了，彷彿一切好像都回到了原點\n而塔羅牌想給你的話是，其實這段關係早就已經不適合你了，只是因為過去的一些回憶與共同體驗的經歷而導致你還是想進抓著這段關係，而此刻宇宙想給你一些斷捨離的考題，最後能不能順利通過以及接受，就要看你自己想以什麼樣的角度去看待這件事了～",
 
-  card_b_text: "感覺在對你心動之前，你可能有做了一些什麼讓對方感到有點不太開心的事，讓對方感到非常的懷疑與害怕，導致對方現在其實對你並沒有有心動的感覺，並且他也認為你跟他的價值觀似乎沒有那麼的對上，所以對方也漸漸把重心拉回到他自己的身上，並沒有放太多的心思和心力在你這邊",
+  card_b_heading: "寶劍八逆位",
+  card_b_text: "你們是有機會復合，因為感覺你們分開是有一些誤會並沒有好好的解釋清楚，或是有一些壓力上來的情緒失控而導致你們有一些其他的誤會，而這個只要當你們好好的把這些誤會慢慢解開，有時候其實放下身段去與對方溝通其實也是最有效的方法，因為其實很多事都是因為面子上的問題才會造成很多誤會，所以才會不願意去傾聽對方的解釋和緣由，這反而導致了更多不必要的誤會以及誤解，所以如果你真的想要復合的話就嘗試放下身段願意去與對方溝通，理解他的原因是什麼，才會讓你們有更好的機會喔～",
 
-  card_c_text: "目前他其實比較沉浸在於他自己的世界裡，並沒有對你有太多的想法，不是說你沒讓他有一絲情緒上的波動或是討厭，而是他目前比較專注於在自己的身上，像是事業、工作、賺錢...等等上，所以不用太自責或懷疑自己是不是配不上他，而是他目前就是比較專注於在自己身上，而你現在要做的就是把自己的整個能量狀態提高，他也才會更有機會被吸引，或是吸引到更好的人來到你身邊喔",
+  card_c_heading: "星幣騎士",
+  card_c_text: "你們是有機會的，只是這個過程中需要慢慢來，可能是因為你先前所做的事讓對方目前還有所警惕，或是對方目前比較想要著重與在自身的事業上，但是這並不代表說你們沒有機會，對方其實心裡還有你的，只是目前不太想要這種三溫暖的感覺，所以目前你需要的就是能夠一步一步慢慢地去穩固、重新建構你們之間的信任感，而在這個過程中對方也會慢慢地去回想和重新思考這段關係對他來說意義到底是什麼，重新調整他的心情，等到他完全準備好了之後你們就有機會能夠再次走向彼此喔～",
 
-  divider_label: "建議使用",
-  card_a_product1_name: "升溫能量噴霧",
-  card_a_product1_desc: "讓停在觀望的關係，慢慢重新流動",
-  card_a_product2_name: "靠近魔法蠟燭",
-  card_a_product2_desc: "給曖昧卡住、對方有心動卻猶豫的你",
+  divider_label: "自信推薦搭配使用",
+  card_a_product1_name: "招桃花魔法噴霧",
+  card_a_product1_desc: "睡前輕噴於枕邊與空間，柔化磁場、召喚曖昧好運。",
+  card_a_product2_name: "斷捨離蠟燭",
+  card_a_product2_desc: "給還抓著過去、不願放手的你",
 
-  card_b_product1_name: "修心能量噴霧",
-  card_b_product1_desc: "當關係有誤會時，先穩住彼此情緒",
-  card_b_product2_name: "回溫魔法蠟燭",
-  card_b_product2_desc: "陪你修復那些讓對方退後的距離",
+  card_b_product1_name: "斬桃花魔法噴霧",
+  card_b_product1_desc: "睡前輕噴於身邊環境，幫助斷開消耗你的舊有連結，清理負面磁場。",
+  card_b_product2_name: "復合魔法蠟燭",
+  card_b_product2_desc: "給還有感情，卻卡在誤會的你",
 
-  card_c_product1_name: "發光能量噴霧",
-  card_c_product1_desc: "讓你把注意力收回來，重新發光，吸引正向連結",
-  card_c_product2_name: "引愛魔法蠟燭",
-  card_c_product2_desc: "先愛回自己，才吸引更好的靠近",
+  card_c_product1_name: "自信氣場噴霧",
+  card_c_product1_desc: "出門前輕噴於身上，提升個人氣場與自信心，吸引正向的連結。",
+  card_c_product2_name: "感情重建蠟燭",
+  card_c_product2_desc: "重新累積信任，讓關係慢慢復原",
 
   cta_text: "想知道心中所想的後續發展嗎？\n歡迎預約一對一個人占卜 🔮",
   line_url: "https://lin.ee/dDmH13O",
@@ -642,8 +640,6 @@ function selectCard(letter){
   document.getElementById('answer-letter').textContent = letter.toUpperCase();
   document.getElementById('answer-heading').textContent = DATA['card_'+letter+'_heading'];
   document.getElementById('answer-text').textContent = DATA['card_'+letter+'_text'];
-  document.getElementById('p1-name').textContent = DATA['card_'+letter+'_product1_name'];
-  document.getElementById('p1-desc').textContent = DATA['card_'+letter+'_product1_desc'];
   document.getElementById('p2-name').textContent = DATA['card_'+letter+'_product2_name'];
   document.getElementById('p2-desc').textContent = DATA['card_'+letter+'_product2_desc'];
 
